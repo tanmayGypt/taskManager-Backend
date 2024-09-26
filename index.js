@@ -47,7 +47,13 @@ app.get("/tasks", (req, res) => {
 app.post("/create", (req, res) => {
   const { Title, Description, Priority, Due, Status } = req.body;
   try {
-    newtask = new taskTable({ Title, Description, Priority, Due, Status });
+    newtask = new taskTable({
+      Title,
+      Description,
+      Priority,
+      Due,
+      Status: false,
+    });
     newtask.save();
     res.json("Saved your task");
   } catch (e) {
@@ -57,11 +63,11 @@ app.post("/create", (req, res) => {
 });
 
 app.post("/mark", async (req, res) => {
-  const { id } = req.body;
+  const { id, Status } = req.body;
   try {
     const updatedTask = await taskTable.findOneAndUpdate(
       { _id: id },
-      { Status: true }
+      { Status }
     );
     res.status(200).json(updatedTask);
   } catch (e) {}
