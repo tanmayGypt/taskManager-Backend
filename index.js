@@ -27,7 +27,7 @@ const schema = {
 
 const taskTable = mongoose.model("TaskList", schema);
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Backend is running");
 });
 
