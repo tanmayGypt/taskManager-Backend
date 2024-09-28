@@ -72,3 +72,30 @@ app.post("/mark", async (req, res) => {
     res.status(200).json(updatedTask);
   } catch (e) {}
 });
+
+app.post("/update", async (req, res) => {
+  const { id, Title, Description, Priority, Due, Status } = req.body;
+  try {
+    const updatedTask = await taskTable.findOneAndUpdate(
+      { _id: id },
+      { Title, Description, Priority, Due, Status },
+      { new: true } // Return the updated task
+      
+    );
+    console.log(updatedTask)
+    res.status(200).json(updatedTask);
+  } catch (e) {
+    res.status(500).json({ message: "Error updating task", error: e.message });
+  }
+});
+
+
+app.post("/delete", async (req, res) => {
+  const { id } = req.body;
+  try {
+    const deletedTask = await taskTable.findByIdAndDelete(id);
+    res.status(200).json(deletedTask);
+  } catch (e) {
+    res.status(500).json({ message: "Error deleting task", error: e.message });
+  }
+});
